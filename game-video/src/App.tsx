@@ -12,11 +12,11 @@ function App() {
         <NavBar/>
         </GridItem>
         <Show above="lg">
-     <GridItem area ="aside" bg ="gold">
+     <GridItem justifyContent={"space-between"} px="6" area ="aside">
         Aside
         </GridItem>
         </Show>
-     <GridItem area ="main" bg ="dodgerblue">
+     <GridItem area ="main" >
         Main
         </GridItem>
         
