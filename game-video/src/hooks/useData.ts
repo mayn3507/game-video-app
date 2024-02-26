@@ -1,4 +1,4 @@
-import { CanceledError } from "axios";
+import { AxiosRequestConfig, CanceledError } from "axios";
 import { useEffect, useState } from "react";
 import apiClient from "../services/api-client";
 
@@ -9,7 +9,7 @@ interface FetchResponse <T>{
     results: T[];
 }
 
-const useData = <T>(endpoint:string) => {
+const useData = <T>(endpoint:string , requestConfig?: AxiosRequestConfig, deps?: any[]) => {
     const [data , setData ] = useState<T[]>([]);
     const [error , setError] = useState('');
     const  [isLoading , setIsLoading] = useState(true) ;
@@ -20,7 +20,7 @@ useEffect(() => {
     setIsLoading(true);
 
     apiClient
-    .get<FetchResponse<T>>(endpoint, { signal:controller.signal })  //adds a timeout to the request
+    .get<FetchResponse<T>>(endpoint, { signal:controller.signal, ...requestConfig })  //adds a timeout to the request
     .then(res => {
         setData(res.data.results);
         setIsLoading(false);
@@ -33,7 +33,7 @@ useEffect(() => {
 
     return  ()=> controller.abort();   //cleanup function that will be called when this component is unmounted (removed from
     
-},[]);
+}, deps ? [...deps]: []);
  return { data , error, isLoading }; 
 
 } ; 
